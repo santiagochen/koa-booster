@@ -72,7 +72,7 @@ const registerErrorCatcher = (app) => {
   });
 }
 
-const registerRoutes = function (app, routesDir = path.join(__dirname, 'router'), routesPassed = '/') {
+const registerRoutes = function (app, routesDir = path.join(process.cwd(), 'router'), routesPassed = '/') {
 
   if (!fs.existsSync(routesDir)) {
     console.error(routesDir + ' not exists')
