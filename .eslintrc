@@ -1,0 +1,22 @@
+{
+  "env": {
+    "es6": true,
+    "node": true,
+    "mocha": true
+  },
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 2017,
+    "sourceType": "module",
+    "ecmaFeatures": {}
+  },
+  "extends": [
+    "eslint:recommended"
+  ],
+  "plugins": [],
+  "rules" : {
+    "jsdoc/check-tag-names": 0,
+    "jsdoc/require-param": 0,
+    "no-console": "off"
+  }
+}
