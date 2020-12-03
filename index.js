@@ -18,8 +18,13 @@ const ctxerBuilder = async (ctx, range, options)=>{
         ctx[range]=Object.assign( ctx[range], require(path.join(process.cwd(), `${range}/${item.replace('.js','')}`)) )
         console.log("ctxer need override env config")
       }
-    }else{
+    }else if(range==="middlewares"){
       ctx[range][item.replace('.js','')]= require(path.join(process.cwd(), `${range}/${item.replace('.js','')}`))
+    }else{
+      let i = require(path.join(process.cwd(), `${range}/${item.replace('.js','')}`))
+      ctx[range][item.replace('.js','')]= typeof(i) === "function"
+      ? i(ctx)
+      : i
     }
   })
 }
@@ -45,8 +50,13 @@ const hangOnApp = (app, range, options)=>{
         app[range]=Object.assign( {}, app[range], require(path.join(process.cwd(), `${range}/${item.replace('.js','')}`)) )
         console.log("hangOnApp need override env config")
       }
-    }else{
+    }else if(range==="middlewares"){
       app[range][item.replace('.js','')]= require(path.join(process.cwd(), `${range}/${item.replace('.js','')}`))
+    }else{
+      let i = require(path.join(process.cwd(), `${range}/${item.replace('.js','')}`))
+      app[range][item.replace('.js','')]= typeof(i) === "function"
+      ? i(app)
+      : i
     }
   })
 }
@@ -125,9 +135,9 @@ const pipeMiddleWares = (app,options)=>{
 
 const registerApp = (app, options)=>{
   hanging(app,options)
+  registerCtxer(app,options)
   pipeMiddleWares(app,options)
   registerRoutes(app)
-  registerCtxer(app,options)
   registerErrorCatcher(app,options)
 }
 

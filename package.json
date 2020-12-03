@@ -1,6 +1,6 @@
 {
   "name": "koa-booster",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "booster for koa",
   "main": "index.js",
   "scripts": {
