@@ -130,7 +130,7 @@ const useRoutes = (app, file, url) => {
 }
 
 const pipeMiddleWares = (app,options)=>{
-  app.use(compose(options.middlewares(app)))
+  if(options.middlewares) app.use(compose(options.middlewares(app)))
 }
 
 const registerApp = (app, options)=>{
