@@ -56,6 +56,8 @@
   ctx.{模块名称}.{变量名}
   ```
 - Router示例
+  > /router/index.js index.js会默认为服务根路由: /
+  > /router/demo.js demo.js会对应服务路由: /demo
   ```
   module.exports = (app) =>{
     const { router, controller, middlewares } = app
