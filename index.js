@@ -5,23 +5,23 @@ const compose = require('koa-compose')
 const includedDir = ['middlewares','config', 'controller', 'service', 'utils']
 const defaultHost = '127.0.0.1'
 const defaultPort = 3000
+const processCwd = process.argv[1].split("/").slice(0,-1).join("/")
 
 const ctxerBuilder = async (ctx, range, options)=>{
   ctx[range] = Object.create(null)
-  let items = await fs.readdirSync( path.join(process.cwd(), range) )
+  let items = await fs.readdirSync( path.join(processCwd, range) )
   items.map((item)=>{ 
     if( range==="config" ){
       if(item.replace('.js','')==="config"){
-        ctx[range]= require(path.join(process.cwd(), `${range}/${item.replace('.js','')}`))
+        ctx[range]= require(path.join(processCwd, `${range}/${item.replace('.js','')}`))
       }
       if(options.env && item.replace('.js','')===`config.${options.env}`){
-        ctx[range]=Object.assign( ctx[range], require(path.join(process.cwd(), `${range}/${item.replace('.js','')}`)) )
-        console.log("ctxer need override env config")
+        ctx[range]=Object.assign( ctx[range], require(path.join(processCwd, `${range}/${item.replace('.js','')}`)) )
       }
     }else if(range==="middlewares"){
-      ctx[range][item.replace('.js','')]= require(path.join(process.cwd(), `${range}/${item.replace('.js','')}`))
+      ctx[range][item.replace('.js','')]= require(path.join(processCwd, `${range}/${item.replace('.js','')}`))
     }else{
-      let i = require(path.join(process.cwd(), `${range}/${item.replace('.js','')}`))
+      let i = require(path.join(processCwd, `${range}/${item.replace('.js','')}`))
       ctx[range][item.replace('.js','')]= typeof(i) === "function"
       ? i(ctx)
       : i
@@ -40,20 +40,20 @@ const registerCtxer = (app, options)=>{
 
 const hangOnApp = (app, range, options)=>{
   app[range] = Object.create(null)
-  let items = fs.readdirSync( path.join(process.cwd(), range) )
+  
+  let items = fs.readdirSync( path.join(processCwd, range) )
   items.map((item)=>{ 
     if( range==="config" ){
       if(item.replace('.js','')==="config"){
-        app[range]= require(path.join(process.cwd(), `${range}/${item.replace('.js','')}`))
+        app[range]= require(path.join(processCwd, `${range}/${item.replace('.js','')}`))
       }
       if(options.env && item.replace('.js','')===`config.${options.env}`){
-        app[range]=Object.assign( {}, app[range], require(path.join(process.cwd(), `${range}/${item.replace('.js','')}`)) )
-        console.log("hangOnApp need override env config")
+        app[range]=Object.assign( {}, app[range], require(path.join(processCwd, `${range}/${item.replace('.js','')}`)) )
       }
     }else if(range==="middlewares"){
-      app[range][item.replace('.js','')]= require(path.join(process.cwd(), `${range}/${item.replace('.js','')}`))
+      app[range][item.replace('.js','')]= require(path.join(processCwd, `${range}/${item.replace('.js','')}`))
     }else{
-      let i = require(path.join(process.cwd(), `${range}/${item.replace('.js','')}`))
+      let i = require(path.join(processCwd, `${range}/${item.replace('.js','')}`))
       app[range][item.replace('.js','')]= typeof(i) === "function"
       ? i(app)
       : i
@@ -73,7 +73,7 @@ const registerErrorCatcher = (app) => {
     console.error(err)
   });
   process.on('exit', function () {
-    console.log("exit!")
+    console.error("exit!")
     console.error(arguments)
   });
   app.on('error', function (err) {
@@ -82,7 +82,7 @@ const registerErrorCatcher = (app) => {
   });
 }
 
-const registerRoutes = function (app, routesDir = path.join(process.cwd(), 'router'), routesPassed = '/') {
+const registerRoutes = function (app, routesDir = path.join(processCwd, 'router'), routesPassed = '/') {
 
   if (!fs.existsSync(routesDir)) {
     console.error(routesDir + ' not exists')
