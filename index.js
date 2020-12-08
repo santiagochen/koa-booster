@@ -5,7 +5,8 @@ const compose = require('koa-compose')
 const includedDir = ['middlewares','config', 'controller', 'service', 'utils']
 const defaultHost = '127.0.0.1'
 const defaultPort = 3000
-const processCwd = process.argv[1].split("/").slice(0,-1).join("/")
+// const processCwd = process.argv[1].split("/").slice(0,-1).join("/")
+const processCwd = process.cwd()
 
 const ctxerBuilder = async (ctx, range, options)=>{
   ctx[range] = Object.create(null)
