@@ -31,6 +31,8 @@
       require('./middlewares/m1')({name:'rename'}),
       require('./middlewares/m2')(),
     ],
+    //挂载路由之后再挂载的中间件 可选
+    middlewaresAfterRouter: app=>[]
   })
   ```
 - Structure

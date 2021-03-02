@@ -134,11 +134,16 @@ const pipeMiddleWares = (app,options)=>{
   if(options.middlewares) app.use(compose(options.middlewares(app)))
 }
 
+const pipeMiddleWaresAfterRouter = (app,options)=>{
+  if(options.middlewaresAfterRouter) app.use(compose(options.middlewaresAfterRouter(app)))
+}
+
 const registerApp = (app, options)=>{
   hanging(app,options)
   registerCtxer(app,options)
   pipeMiddleWares(app,options)
   registerRoutes(app)
+  pipeMiddleWaresAfterRouter(app,options)
   registerErrorCatcher(app,options)
 }
 
