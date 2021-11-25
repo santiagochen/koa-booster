@@ -6,7 +6,7 @@ const includedDir = ['middlewares','config', 'controller', 'service', 'utils']
 const defaultHost = '127.0.0.1'
 const defaultPort = 3000
 // const processCwd = process.argv[1].split("/").slice(0,-1).join("/")
-const processCwd = process.cwd()
+let processCwd;
 
 const ctxerBuilder = async (ctx, range, options)=>{
   ctx[range] = Object.create(null)
@@ -152,9 +152,9 @@ module.exports = (app, options = false) => {
     host: defaultHost,
     port: defaultPort
   }, options)
-  
+  processCwd = _options.baseDir || process.cwd();
   registerApp(app, _options)
-
+  
   app.host = process.env.IP || _options.host;
   app.port = process.env.PORT || _options.port;
   return app.listen(app.port, app.host, () => {
