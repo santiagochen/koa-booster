@@ -17,6 +17,8 @@
     port: 3001,
     //环境变量，决定配置变量的取值 可选
     env: 'test',
+    //项目路径, 可选
+    baseDir: __dirname, //可以指定服务启动文件的路径
     //中间件 可选
     middlewares: app=>[
       require('koa-static')('public', {
